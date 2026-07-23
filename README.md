@@ -1,85 +1,153 @@
-# ⚡ Modern SQL Data Warehouse Project
+Markdown
+<div align="center">
 
-> **An End-to-End Data Engineering Solution using Microsoft SQL Server, Medallion Architecture, and Dimensional Modeling.**
+# 🏛️ Enterprise Data Warehouse Engineering Solution
+### *End-to-End Modern Data Architecture & ETL Pipeline using SQL Server*
 
----
-
-## 👨‍💻 About Me
-
-Hi there! I'm **Seif El-Din Sameh** (Saif), a 3rd-year **Communications & Electronics Engineering** student at the Higher Technological Institute (6th of October City). 
-
-I am actively transitioning my technical focus into **Data Engineering**, concentrating on high-performance database architectures, query optimization, ETL pipelines, and modern data warehouse design principles.
-
-📫 **Let's Connect & Collaborate:**
-* **Email:** [safeserag@gmail.com](mailto:safeserag@gmail.com)
-* **LinkedIn:** [safe-serag](https://www.linkedin.com/in/safe-serag-89a8a3253)
-* **GitHub:** [seif-serag](https://github.com/seif-serag)
+[![SQL Server](https://img.shields.io/badge/SQL%20Server-CC292B?style=for-the-badge&logo=microsoftsqlserver&logoColor=white)](https://www.microsoft.com/en-us/sql-server)
+[![Architecture](https://img.shields.io/badge/Medallion-Bronze%20%7C%20Silver%20%7C%20Gold-amber?style=for-the-badge&logo=databricks&logoColor=white)](#-data-architecture)
+[![License](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)](LICENSE)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/safe-serag-89a8a3253/)
 
 ---
 
-## 🌟 Project Overview
+</div>
 
-This repository demonstrates the design and implementation of an **Enterprise Data Warehouse**. The core goal is to extract raw transactional data from heterogeneous source systems (ERP & CRM), resolve data quality anomalies, and transform the data into a unified, high-performance **Star Schema** to support business data warehousing needs.
+## 📌 Executive Summary
 
----
+This repository contains an end-to-end **Enterprise Data Warehouse** implementation engineered with **Microsoft SQL Server**. The core objective of this project is to consolidate disparate source systems (CRM & ERP data) into a unified, high-performance Data Warehouse using the **Medallion Architecture (Bronze $\rightarrow$ Silver $\rightarrow$ Gold)**.
 
-## 🏗️ Data Architecture (Medallion Pattern)
-
-The data pipeline implements the **Medallion Architecture** to ensure clean data processing, auditability, and clear separation of concerns across layers:
-
-![Data Architecture](C:\Users\safes\OneDrive\Desktop\docs\data_architecture.png)
-
-### Architectural Layers Breakdown:
-
-1. **🥉 Bronze Layer (Raw Ingestion):**
-   * **Source:** CSV files from CRM and ERP systems.
-   * **Process:** Batch processing using SQL Stored Procedures (`BULK INSERT` / Full Load).
-   * **Transformations:** None (stores raw data as-is for data lineage and auditing).
-
-2. **🥈 Silver Layer (Cleansing & Standardization):**
-   * **Process:** Stored procedures executing `Truncate & Insert` logic.
-   * **Transformations:** Data cleansing, standardization, normalization, handling missing/NULL values, derived columns, and data enrichment.
-
-3. **🥇 Gold Layer (Data Modeling):**
-   * **Object Type:** Database Views (No physical storage load).
-   * **Data Model:** **Star Schema** featuring Fact and Dimension models, flat tables, and business aggregation logic.
+The project demonstrates production-grade Data Engineering principles:
+* Automated Data Ingestion & Batch Loading via Stored Procedures.
+* Rigorous Quality Auditing, Deduplication, and Standardization.
+* Dimensional Modeling into a optimized **Star Schema** with Surrogate Keys.
 
 ---
 
-## 🎯 Technical Highlights
+## 🏗️ Data Architecture
 
-* **ETL Orchestration:** Stored Procedures built with robust T-SQL logic, structured `TRY...CATCH` error handling, and execution duration tracking.
-* **Data Cleansing:** Automated scrubbing using `TRIM()`, `CASE` statements, `COALESCE()`, and type casting.
-* **Dimensional Modeling:** Unified Star Schema joining CRM customer profiles with ERP product and sales transactions using surrogate and business keys.
+The architecture adopts a multi-layered **Medallion Lakehouse/Warehouse Pattern** to guarantee data lineage, consistency, and structural scalability.
+
+![Data Architecture](docs/data_architecture.png)
+
+### 🔹 Layer Specifications
+
+| Layer | Type | Load Pattern | Transformations | Primary Role |
+| :--- | :--- | :--- | :--- | :--- |
+| **🥉 Bronze** | Physical Tables | Full Load (`TRUNCATE & INSERT`) via `BULK INSERT` | None (Raw Ingestion) | Ingests CSV files from ERP and CRM sources *as-is*. |
+| **🥈 Silver** | Physical Tables | Batch Stored Procedures (`silver.load_silver`) | Cleaning, Deduplication, Casting, Enrichment | Normalizes dates, standardizes codes (Gender, Marital Status), handles `NULL` values. |
+| **🥇 Gold** | Views / Star Schema | Dynamic Views (`gold.dim_*`, `gold.fact_*`) | Business Rules, Integrations, Surrogate Keys | Exposes clean, dimensionally modeled data for downstream reporting/consumption. |
 
 ---
 
-## 🛠️ Stack & Tools
+## 🛠️ Data Pipeline & Transformation Workflow
 
-* **Database Engine:** Microsoft SQL Server
-* **Management GUI:** SQL Server Management Studio (SSMS)
-* **Language:** T-SQL (DDL, DML, Stored Procedures, Views)
-* **Architecture Diagramming:** Draw.io
+[ CRM Data (CSV) ] ────────┐
+├──> 🥉 Bronze Schema ──> 🥈 Silver Schema ──> 🥇 Gold Schema (Star)
+[ ERP Data (CSV) ] ────────┘      (Raw Ingestion)     (Clean & Standardized)     (Fact & Dimensions)
+
+
+### Key Engineering Involvements:
+1. **Bronze Ingestion:** Robust T-SQL Stored Procedures with `TRY...CATCH` blocks, dynamic execution logging, and precise load duration metrics.
+2. **Silver Transformations:**
+   * **Deduplication:** Applied `ROW_NUMBER() OVER (PARTITION BY cst_id ORDER BY cst_create_date DESC)` to pick latest active customer records.
+   * **Data Normalization:** Cleaned whitespace (`TRIM`), standardized code domains (e.g., mapping `M`/`S` to `Married`/`Single`), and inferred missing values.
+   * **SCD Type 1 Handling:** Managed historical product date overlaps using window functions (`LEAD() OVER(...)`).
+3. **Gold Modeling:** 
+   * Generated synthetic Surrogate Keys (`ROW_NUMBER() OVER(...)`) for Dimension tables.
+   * Joined ERP and CRM profiles seamlessly on normalized business keys.
 
 ---
 
 ## 📂 Repository Structure
 
-```text
 sql-data-warehouse-project/
 │
-├── 📁 datasets/                   # Raw CSV source datasets (ERP & CRM)
+├── datasets/                            # Raw ERP and CRM source datasets (CSV format)
+│   ├── source_crm/                      # CRM tables (Customers, Products, Sales)
+│   └── source_erp/                      # ERP tables (Customer Demographics, Locations, Categories)
 │
-├── 📁 docs/                       # Architectural diagrams & design specs
-│   ├── 📄 data_architecture.png   # Medallion Architecture diagram
-│   ├── 📄 data_catalog.md         # Field definitions and data dictionary
-│   └── 📄 data_models.drawio      # Dimensional model (Star Schema design)
+├── docs/                                # Technical Architecture & Data Models
+│   ├── data_architecture.png            # High-level architecture diagram
+│   ├── etl.drawio                       # Visual ETL workflow diagrams
+│   ├── data_catalog.md                  # Metadata catalog and entity dictionary
+│   └── naming-conventions.md            # Database object naming standards
 │
-├── 📁 scripts/                    # T-SQL Scripts
-│   ├── 📁 bronze/                 # DDL and loading procedures for raw tables
-│   ├── 📁 silver/                 # Transformation and data cleansing procedures
-│   └── 📁 gold/                   # Analytical DDL views (Fact & Dimensions)
+├── scripts/                             # T-SQL DDL and DML Engineering Scripts
+│   ├── bronze/                          # DDL script & stored procedures for raw ingestion
+│   ├── silver/                          # Transformation, cleansing, and standardizing scripts
+│   └── gold/                            # Dimensional modeling scripts (Star Schema Views)
 │
-├── 📁 tests/                      # Data quality & consistency tests
+├── tests/                               # Data Quality & Integrity Validation Tests
+│   ├── quality_checks_silver.sql        # Silver layer validation suite
+│   └── quality_checks_gold.sql          # Referential integrity & primary key checks
 │
-└── 📄 README.md                   # Project documentation
+├── README.md                            # Main project overview and technical manual
+└── LICENSE                              # Project License (MIT)
+
+
+---
+
+## 🧪 Data Quality & Validation Suite
+
+Automated SQL audit scripts are located in the `tests/` directory to guarantee strict data integrity across layers:
+
+* **Uniqueness:** Guarantees zero duplicate primary keys on `customer_key` and `product_key`.
+* **Referential Integrity:** Verifies all foreign key relationships in `gold.fact_sales` correctly align with dimension keys (`dim_customers`, `dim_products`).
+* **Boundary & Logical Checks:** Ensures non-negative sales values (`sales_amount = quantity * price`) and logical date progressions (`order_date <= ship_date`).
+
+---
+
+## ⚙️ How to Deploy & Run
+
+### Prerequisites
+* Microsoft SQL Server (Express or Developer Edition).
+* SQL Server Management Studio (SSMS) or Azure Data Studio.
+
+### Installation Steps
+
+1. **Clone the Repository:**
+   ```bash
+   git clone [https://github.com/seif-serag/sql-data-warehouse-project.git](https://github.com/seif-serag/sql-data-warehouse-project.git)
+   cd sql-data-warehouse-project
+Create Schemas & Bronze Objects:
+
+Open SSMS and connect to your SQL Server instance.
+
+Create database DataWarehouse.
+
+Run script: scripts/bronze/proc_load_bronze.sql.
+
+Note: Update the local CSV file paths in the BULK INSERT statement to point to your cloned datasets/ path.
+
+Execute Ingestion Pipeline:
+
+SQL
+EXEC bronze.load_bronze;
+Build Silver Layer & Run Cleanse Transformations:
+
+Run script: scripts/silver/proc_load_silver.sql.
+
+Execute:
+
+SQL
+EXEC silver.load_silver;
+Deploy Gold Star Schema:
+
+Run script: scripts/gold/ddl_gold.sql to build the dimensional views.
+
+Validate Implementation:
+
+Run tests/quality_checks_gold.sql to run full validation tests.
+
+👨‍💻 Author
+Seif El-Din Sameh (Saif)
+
+Data Engineering Practitioner
+
+LinkedIn: linkedin.com/in/safe-serag-89a8a3253
+
+GitHub: @seif-serag
+
+📜 License
+This project is open-source and licensed under the MIT License.
