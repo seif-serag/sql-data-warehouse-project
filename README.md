@@ -144,16 +144,31 @@ Run tests/quality_checks_gold.sql to run full validation tests.
 
 ## 👨‍💻 Author
 
-**Seif El-Din Sameh (Saif)**  
-*Data Engineering Practitioner*
-
-* **LinkedIn:** [linkedin.com/in/safe-serag-89a8a3253](https://www.linkedin.com/in/safe-serag-89a8a3253/)
-* **GitHub:** [github.com/seif-serag](https://github.com/seif-serag)
+### **Seif El-Din Sameh (Saif)**  
+*Electronics & Communications Engineering Student | Aspiring Data Engineer*
 
 ---
 
+#### 🌟 About Me
+I am a 3rd-year **Electronics & Communications Engineering** student at the **Higher Technological Institute (6th of October Branch)**, actively specializing and building enterprise-grade solutions in **Data Engineering**. 
+
+My core focus centers on database architecture, pipeline performance optimization, and scalable data warehousing models:
+* **Core Expertise:** T-SQL, Advanced Query Optimization, Stored Procedures, Window Functions, Complex CTEs.
+* **Architecture Models:** Medallion Lakehouse/Data Warehouse Architecture (Bronze, Silver, Gold Layers), Dimensional Modeling (Star Schema), Data Cleansing & Quality Control.
+* **Engineering Principles:** Clean Code Standards, Scalable Data Pipelines, Automated ETL/ELT Batch Loads.
+
+---
+
+#### 📬 Connect with Me
+
+Feel free to connect or reach out for collaboration on Data Engineering projects, database optimization, or technology discussions!
+
+* **LinkedIn:** [Seif El-Din Sameh](https://www.linkedin.com/in/safe-serag-89a8a3253/)
+* **GitHub Repository:** [seif-serag/sql-data-warehouse-project](https://github.com/seif-serag/sql-data-warehouse-project)
+
+<br>
+
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/safe-serag-89a8a3253/)
 [![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/seif-serag)
-
 ## 📜 License
 This project is open-source and licensed under the MIT License.
