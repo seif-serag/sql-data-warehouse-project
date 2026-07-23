@@ -102,45 +102,64 @@ Automated SQL audit scripts are located in the `tests/` directory to guarantee s
 
 ## ⚙️ How to Deploy & Run
 
-### Prerequisites
-* Microsoft SQL Server (Express or Developer Edition).
-* SQL Server Management Studio (SSMS) or Azure Data Studio.
+Follow these instructions to deploy and execute the Data Warehouse pipeline on your local SQL Server instance.
 
-### Installation Steps
+---
 
-1. **Clone the Repository:**
-   ```bash
-   git clone [https://github.com/seif-serag/sql-data-warehouse-project.git](https://github.com/seif-serag/sql-data-warehouse-project.git)
-   cd sql-data-warehouse-project
-Create Schemas & Bronze Objects:
+### 📋 Prerequisites
+* **Database Engine:** Microsoft SQL Server (2019 or later recommended).
+* **IDE:** SQL Server Management Studio (SSMS) or Azure Data Studio.
+* **Datasets:** The CSV files located in the `datasets/` directory.
 
-Open SSMS and connect to your SQL Server instance.
+---
 
-Create database DataWarehouse.
+### 🚀 Step-by-Step Deployment
 
-Run script: scripts/bronze/proc_load_bronze.sql.
+#### 1️⃣ Clone the Repository
+```bash
+git clone [https://github.com/seif-serag/sql-data-warehouse-project.git](https://github.com/seif-serag/sql-data-warehouse-project.git)
+cd sql-data-warehouse-project
+```
 
-Note: Update the local CSV file paths in the BULK INSERT statement to point to your cloned datasets/ path.
+#### 2️⃣ Create Database
+Open **SSMS**, connect to your local server instance, and execute:
+```sql
+CREATE DATABASE DataWarehouse;
+GO
+USE DataWarehouse;
+GO
+```
 
-Execute Ingestion Pipeline:
-
-SQL
+#### 3️⃣ Deploy & Load Bronze Layer
+1. Execute the DDL and Stored Procedure script: `scripts/bronze/proc_load_bronze.sql`
+2. **Note:** Update the CSV file paths inside `BULK INSERT` to match your local project directory.
+3. Trigger the raw ingestion pipeline:
+```sql
 EXEC bronze.load_bronze;
-Build Silver Layer & Run Cleanse Transformations:
+```
 
-Run script: scripts/silver/proc_load_silver.sql.
-
-Execute:
-
-SQL
+#### 4️⃣ Deploy & Load Silver Layer
+1. Execute the transformation script: `scripts/silver/proc_load_silver.sql`
+2. Run the cleansing procedure:
+```sql
 EXEC silver.load_silver;
-Deploy Gold Star Schema:
+```
 
-Run script: scripts/gold/ddl_gold.sql to build the dimensional views.
+#### 5️⃣ Deploy Gold Star Schema
+Execute the Gold DDL script to create the dimensional views (`dim_customers`, `dim_products`, `fact_sales`):
+```sql
+-- File: scripts/gold/ddl_gold.sql
+```
 
-Validate Implementation:
+#### 6️⃣ Validate Data Quality
+Run the validation suites to verify schema integrity:
+```sql
+-- Execute Silver Data Quality checks
+-- File: tests/quality_checks_silver.sql
 
-Run tests/quality_checks_gold.sql to run full validation tests.
+-- Execute Gold Referential Integrity checks
+-- File: tests/quality_checks_gold.sql
+```
 
 ## 👨‍💻 Author
 
