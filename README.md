@@ -61,6 +61,7 @@ The architecture adopts a multi-layered **Medallion Lakehouse/Warehouse Pattern*
 
 ## 📂 Repository Structure
 
+```text
 sql-data-warehouse-project/
 │
 ├── datasets/                            # Raw ERP and CRM source datasets (CSV format)
@@ -84,6 +85,7 @@ sql-data-warehouse-project/
 │
 ├── README.md                            # Main project overview and technical manual
 └── LICENSE                              # Project License (MIT)
+```
 
 
 ---
