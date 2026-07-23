@@ -140,7 +140,7 @@ Validate Implementation:
 
 Run tests/quality_checks_gold.sql to run full validation tests.
 
-👨‍💻 Author
+## 👨‍💻 Author
 Seif El-Din Sameh (Saif)
 
 Data Engineering Practitioner
@@ -149,5 +149,5 @@ LinkedIn: linkedin.com/in/safe-serag-89a8a3253
 
 GitHub: @seif-serag
 
-📜 License
+## 📜 License
 This project is open-source and licensed under the MIT License.
