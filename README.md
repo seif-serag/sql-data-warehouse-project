@@ -27,7 +27,7 @@ This repository demonstrates the design and implementation of an **Enterprise Da
 
 The data pipeline implements the **Medallion Architecture** to ensure clean data processing, auditability, and clear separation of concerns across layers:
 
-![Data Architecture]("C:\Users\safes\OneDrive\Desktop\docs\data_architecture.png")
+![Data Architecture](C:\Users\safes\OneDrive\Desktop\docs\data_architecture.png)
 
 ### Architectural Layers Breakdown:
 
